@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Solicitar Servicio</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    input, select, button, textarea {
+      width: 100%; padding: 10px; margin: 10px 0;
+    }
+    #respuesta { margin-top: 20px; color: green; }
+  </style>
+</head>
+<body>
+  <h2>🛎️ Solicitud de Servicio</h2>
+
+  <label>Nombre del huésped:</label>
+  <input type="text" id="nombre" placeholder="Ej. Juan Pérez" required />
+
+  <label>Número de habitación:</label>
+  <input type="text" id="habitacion" placeholder="Ej. 302" required />
+
+  <label>Selecciona un servicio:</label>
+  <select id="servicio" onchange="cargarOpciones()">
+    <option value="">-- Elegir servicio --</option>
+    <option value="ama">Ama de llaves</option>
+    <option value="mantenimiento">Mantenimiento</option>
+    <option value="roomservice">Roomservice</option>
+  </select>
+
+  <select id="opciones" style="display:none;" onchange="verificarOtro()"></select>
+
+  <textarea id="otroTexto" placeholder="Describe tu solicitud..." style="display:none;"></textarea>
+
+  <button onclick="enviarPedido()">Enviar</button>
+
+  <div id="respuesta"></div>
+
+  <script>
+    const datos = {
+      ama: ["Cambio de sábanas", "Limpieza de habitación", "Pedir toallas", "Otro"],
+      mantenimiento: [
+        "Baño - Fuga", "Baño - Sin agua caliente",
+        "Aire acondicionado - No funciona",
+        "Televisión - No enciende", "Televisión - No hay señal", "Otro"
+      ],
+      roomservice: [
+        "Menú del desayuno", "Menú de la comida", "Menú de la cena",
+        "Menú de la alberca", "Menú de niños"
+      ]
+    };
+
+    function cargarOpciones() {
+      const servicio = document.getElementById("servicio").value;
+      const opciones = document.getElementById("opciones");
+      const otroTexto = document.getElementById("otroTexto");
+      opciones.innerHTML = "";
+      otroTexto.style.display = "none";
+
+      if (datos[servicio]) {
+        opciones.style.display = "block";
+        datos[servicio].forEach(op => {
+          const opt = document.createElement("option");
+          opt.value = op;
+          opt.text = op;
+          opciones.add(opt);
+        });
+      } else {
+        opciones.style.display = "none";
+      }
+    }
+
+    function verificarOtro() {
+      const opcion = document.getElementById("opciones").value;
+      const otroTexto = document.getElementById("otroTexto");
+      otroTexto.style.display = (opcion === "Otro") ? "block" : "none";
+    }
+
+    function enviarPedido() {
+      const nombre = document.getElementById("nombre").value.trim();
+      const habitacion = document.getElementById("habitacion").value.trim();
+      const servicio = document.getElementById("servicio").value;
+      const opcion = document.getElementById("opciones").value;
+      const otroTexto = document.getElementById("otroTexto").value.trim();
+
+      if (!nombre || !habitacion || !servicio || !opcion) {
+        alert("Por favor, completa todos los campos.");
+        return;
+      }
+
+      const descripcion = (opcion === "Otro") ? otroTexto : opcion;
+
+      if (opcion === "Otro" && !otroTexto) {
+        alert("Por favor, describe tu solicitud en el campo de texto.");
+        return;
+      }
+
+      const pedido = {
+        nombre,
+        habitacion,
+        servicio,
+        descripcion,
+        hora: new Date().toLocaleTimeString()
+      };
+
+      const pedidos = JSON.parse(localStorage.getItem("pedidos") || "[]");
+      pedidos.push(pedido);
+      localStorage.setItem("pedidos", JSON.stringify(pedidos));
+
+      document.getElementById("respuesta").innerText = "✅ Pedido enviado correctamente.";
+      document.getElementById("nombre").value = "";
+      document.getElementById("habitacion").value = "";
+      document.getElementById("servicio").value = "";
+      document.getElementById("opciones").innerHTML = "";
+      document.getElementById("opciones").style.display = "none";
+      document.getElementById("otroTexto").style.display = "none";
+      document.getElementById("otroTexto").value = "";
+    }
+  </script>
+</body>
+</html>
+ 
