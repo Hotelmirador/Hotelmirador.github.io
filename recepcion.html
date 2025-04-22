@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Recepción - Pedidos</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background-color: #f0f0f0;
+    }
+    h2 {
+      text-align: center;
+    }
+    .pedido {
+      background: white;
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 5px #ccc;
+    }
+    .pedido strong {
+      display: inline-block;
+      width: 130px;
+    }
+  </style>
+</head>
+<body>
+  <h2>📋 Pedidos Recibidos</h2>
+  <div id="lista"></div>
+
+  <script>
+    function mostrarPedidos() {
+      const lista = document.getElementById("lista");
+      const pedidos = JSON.parse(localStorage.getItem("pedidos") || "[]");
+      lista.innerHTML = "";
+
+      pedidos.slice().reverse().forEach(pedido => {
+        const div = document.createElement("div");
+        div.className = "pedido";
+        div.innerHTML = `
+          <p><strong>🧑 Huésped:</strong> ${pedido.nombre}</p>
+          <p><strong>🚪 Habitación:</strong> ${pedido.habitacion}</p>
+          <p><strong>🛎️ Servicio:</strong> ${pedido.servicio}</p>
+          <p><strong>📄 Solicitud:</strong> ${pedido.descripcion}</p>
+          <p><strong>🕒 Hora:</strong> ${pedido.hora}</p>
+        `;
+        lista.appendChild(div);
+      });
+    }
+
+    // Actualiza la lista cada 3 segundos
+    setInterval(mostrarPedidos, 3000);
+    mostrarPedidos();
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Recepción - Pedidos</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background-color: #f0f0f0;
+    }
+    h2 {
+      text-align: center;
+    }
+    .pedido {
+      background: white;
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 5px #ccc;
+    }
+    .pedido strong {
+      display: inline-block;
+      width: 130px;
+    }
+  </style>
+</head>
+<body>
+  <h2>📋 Pedidos Recibidos</h2>
+  <div id="lista"></div>
+
+  <script>
+    function mostrarPedidos() {
+      const lista = document.getElementById("lista");
+      const pedidos = JSON.parse(localStorage.getItem("pedidos") || "[]");
+      lista.innerHTML = "";
+
+      pedidos.slice().reverse().forEach(pedido => {
+        const div = document.createElement("div");
+        div.className = "pedido";
+        div.innerHTML = `
+          <p><strong>🧑 Huésped:</strong> ${pedido.nombre}</p>
+          <p><strong>🚪 Habitación:</strong> ${pedido.habitacion}</p>
+          <p><strong>🛎️ Servicio:</strong> ${pedido.servicio}</p>
+          <p><strong>📄 Solicitud:</strong> ${pedido.descripcion}</p>
+          <p><strong>🕒 Hora:</strong> ${pedido.hora}</p>
+        `;
+        lista.appendChild(div);
+      });
+    }
+
+    // Actualiza la lista cada 3 segundos
+    setInterval(mostrarPedidos, 3000);
+    mostrarPedidos();
+  </script>
+</body>
+</html>
